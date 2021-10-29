@@ -1,7 +1,6 @@
-from typing import Optional, Union
+from typing import Union
 
 from database.models.user import User
-from database.models.search_options import SearchOptions
 from database.models.country import Country
 from database.types import UserSexEnum, SearchOptionsSexEnum, CountriesEnum
 

@@ -1,8 +1,7 @@
-from typing import Type, List, Optional
-
-from tortoise import BaseDBAsyncClient
+from typing import Type
 from tortoise.signals import pre_save, post_save
 from loguru import logger
+
 from database.models.user import User
 from database.models.search_options import SearchOptions
 from database.models.country import Country, CountriesEnum

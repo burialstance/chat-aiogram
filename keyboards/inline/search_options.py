@@ -1,11 +1,11 @@
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
-from database.models.country import CountriesEnum
-from database.types import SearchOptionsSexEnum
-import misc.icon_characters as icons
+from database.types import SearchOptionsSexEnum, CountriesEnum
+from misc import icon_characters as icons
 from misc.country_type_icons import country_type_icons
 from misc.sex_type_icons import sex_type_icons
+
 
 search_options_section_callback = CallbackData('search_options_section', 'section')
 
@@ -24,7 +24,7 @@ def build_search_options_keyboard():
     )
     kb.row(types.InlineKeyboardButton(text=f'{icons.couple} Пол собеседника',
                                       callback_data=search_options_section_callback.new(section='setup_sex'))
-    )
+           )
     return kb
 
 

@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
 from database.types import UserSexEnum, CountriesEnum
-import misc.icon_characters as icons
+from misc import icon_characters as icons
 from misc.country_type_icons import country_type_icons
 from misc.sex_type_icons import sex_type_icons
 

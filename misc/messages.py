@@ -1,11 +1,9 @@
-from typing import Union, Optional
-
 from aiogram.types import ParseMode
-from aiogram.utils.markdown import bold, text
-import misc.icon_characters as icons
+
+from database.models.user import User
+from misc import icon_characters as icons
 from misc.sex_type_icons import sex_type_icons
 from misc.country_type_icons import country_type_icons
-from database.models.user import User
 
 START_COMMAND_TEXT = """
 start command text

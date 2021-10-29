@@ -1,4 +1,3 @@
-import enum
 from tortoise import fields
 
 from database.mixins import TimestampMixin

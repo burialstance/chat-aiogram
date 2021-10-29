@@ -1,14 +1,8 @@
-from enum import Enum
 from tortoise import fields
 
 from database.models import AbstractBaseModel
 from database.mixins import TimestampMixin
-
 from database.types import UserSexEnum
-
-
-
-
 
 
 class User(AbstractBaseModel, TimestampMixin):

@@ -1,8 +1,8 @@
+from loguru import logger
+from aiogram import Dispatcher
 from aiogram.types import ParseMode
 from aiogram.utils.markdown import text, bold, code
 
-from loguru import logger
-from aiogram import Dispatcher
 
 from config import TELEGRAM_ADMINS
 

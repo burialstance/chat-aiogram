@@ -1,5 +1,5 @@
-import misc.icon_characters as icons
 from database.types import SearchOptionsSexEnum, UserSexEnum
+import misc.icon_characters as icons
 
 sex_type_icons = {
     SearchOptionsSexEnum.MALE: icons.man,

@@ -1,7 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.builtin import CommandStart, CommandSettings, Text
-from aiogram.types import ParseMode
+from aiogram.dispatcher.filters.builtin import Text
 
 from loader import dp
 from database.models.user import User

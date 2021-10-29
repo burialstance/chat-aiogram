@@ -1,20 +1,18 @@
-from typing import Union
-
 from aiogram import types
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 
-from database.services import UserService
 from loader import dp
-from middlewares.userdata import userdata_required
 from database.models.user import User
+from middlewares.userdata import userdata_required
+from database.services import UserService
 from misc.messages import build_user_profile_text
+from states.user_profile import UserProfileState
 from keyboards.inline.user_profile import (
     build_user_profile_keyboard, user_profile_section_callback,
     build_user_profile_setup_country_keyboard, user_profile_setup_country_callback,
     build_user_profile_setup_sex_keyboard, user_profile_setup_sex_callback
 )
-from states.user_profile import UserProfileState
 
 
 async def show_user_profile(message: types.Message, user: User, edit_message=False):
@@ -30,7 +28,6 @@ async def show_user_profile(message: types.Message, user: User, edit_message=Fal
 @dp.message_handler(Text(equals=['/user_profile']))
 async def process_show_user_profile(message: types.Message, user: User):
     await show_user_profile(message, user)
-
 
 
 # BACK BUTTON
@@ -59,7 +56,6 @@ async def process_user_profile_setup_age(message: types.Message, state: FSMConte
     await show_user_profile(message, user)
 
 
-
 # SETUP USER COUNTRY
 @dp.callback_query_handler(user_profile_section_callback.filter(section='setup_country'))
 async def process_user_profile_setup_callback(call: types.CallbackQuery):
@@ -74,11 +70,13 @@ async def process_user_profile_setup_country(call: types.CallbackQuery, callback
     await show_user_profile(call.message, user, edit_message=True)
     await call.answer(f'Страна изменена на {user.country.name.value}')
 
+
 # SETUP USER SEX
 @dp.callback_query_handler(user_profile_section_callback.filter(section='setup_sex'))
 async def process_user_profile_setup_sex_callback(call: types.CallbackQuery):
     await call.message.edit_reply_markup(reply_markup=build_user_profile_setup_sex_keyboard())
     await call.answer()
+
 
 @dp.callback_query_handler(user_profile_setup_sex_callback.filter())
 async def process_user_profile_setup_sex(call: types.CallbackQuery, callback_data: dict):

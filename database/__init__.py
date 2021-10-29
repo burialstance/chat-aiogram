@@ -1,12 +1,10 @@
-import sys
-
 from tortoise import Tortoise
 from loguru import logger
 import logging
 
 
-from . import settings
-from . import signals
+from database import settings
+from database import signals
 
 
 async def database_init(logging_level=None):

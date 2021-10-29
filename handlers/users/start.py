@@ -1,10 +1,8 @@
 from aiogram import types
-from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import ParseMode
 
 from loader import dp
-
 from database.models.user import User
 from middlewares.userdata import userdata_required
 from misc.messages import START_COMMAND_TEXT
@@ -16,4 +14,3 @@ async def process_start_command(message: types.Message, user: User):
     await message.answer(
         START_COMMAND_TEXT.format(user=user.telegram_id),
         parse_mode=ParseMode.MARKDOWN)
-
