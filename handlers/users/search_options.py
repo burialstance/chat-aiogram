@@ -11,7 +11,7 @@ from keyboards.inline.search_options import (
     build_search_options_keyboard, search_options_section_callback,
     build_setup_age_keyboard, search_options_setup_age_callback,
     build_setup_country_keyboard, search_options_setup_country_callback,
-    build_setup_sex_keyboard, search_options_setup_sex_callback
+    build_setup_gender_keyboard, search_options_setup_gender_callback
 )
 
 
@@ -38,7 +38,7 @@ async def process_sections_callback(call: types.CallbackQuery, callback_data: di
 
         'setup_age': build_setup_age_keyboard,
         'setup_country': build_setup_country_keyboard,
-        'setup_sex': build_setup_sex_keyboard
+        'setup_gender': build_setup_gender_keyboard
     }
 
     keyboard = keyboards_sections.get(section)()
@@ -67,11 +67,11 @@ async def process_setup_country_callback(call: types.CallbackQuery, callback_dat
     await call.answer(f'Изменено на: {user.search_options.country.name.value}')
 
 
-# SETUP SEX
+# SETUP GENDER
 @userdata_required
-@dp.callback_query_handler(search_options_setup_sex_callback.filter())
-async def process_setup_sex_callback(call: types.CallbackQuery, callback_data: dict, user: User):
-    sex = callback_data.get('sex')
-    user = await UserService.search_options.setup_sex(user=user, sex=sex)
+@dp.callback_query_handler(search_options_setup_gender_callback.filter())
+async def process_setup_gender_callback(call: types.CallbackQuery, callback_data: dict, user: User):
+    gender = callback_data.get('gender')
+    user = await UserService.search_options.setup_gender(user=user, gender=gender)
     await show_search_options(message=call.message, user=user, edit_message=True)
-    await call.answer(f'Изменено на: {user.sex}')
+    await call.answer(f'Изменено на: {user.gender}')

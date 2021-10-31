@@ -2,13 +2,13 @@ from tortoise import fields
 
 from database.mixins import TimestampMixin
 from database.models import AbstractBaseModel
-from database.types import SearchOptionsSexEnum
+from database.enums import SearchOptionsGenderEnum
 
 
 class SearchOptions(AbstractBaseModel, TimestampMixin):
     user: fields.OneToOneRelation['User']
 
-    sex: SearchOptionsSexEnum = fields.CharEnumField(enum_type=SearchOptionsSexEnum, default=SearchOptionsSexEnum.ALL)
+    sex: SearchOptionsGenderEnum = fields.CharEnumField(enum_type=SearchOptionsGenderEnum, default=SearchOptionsGenderEnum.ALL)
     from_age: int = fields.IntField(null=True)
     to_age: int = fields.IntField(null=True)
 

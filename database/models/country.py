@@ -2,7 +2,7 @@ from tortoise import fields
 
 from database.models import AbstractBaseModel
 from database.mixins import TimestampMixin
-from database.types import CountriesEnum
+from database.enums import CountriesEnum
 
 
 class Country(AbstractBaseModel, TimestampMixin):

@@ -11,7 +11,7 @@ from states.user_profile import UserProfileState
 from keyboards.inline.user_profile import (
     build_user_profile_keyboard, user_profile_section_callback,
     build_user_profile_setup_country_keyboard, user_profile_setup_country_callback,
-    build_user_profile_setup_sex_keyboard, user_profile_setup_sex_callback
+    build_user_profile_setup_gender_keyboard, user_profile_setup_gender_callback
 )
 
 
@@ -71,17 +71,17 @@ async def process_user_profile_setup_country(call: types.CallbackQuery, callback
     await call.answer(f'Страна изменена на {user.country.name.value}')
 
 
-# SETUP USER SEX
-@dp.callback_query_handler(user_profile_section_callback.filter(section='setup_sex'))
-async def process_user_profile_setup_sex_callback(call: types.CallbackQuery):
-    await call.message.edit_reply_markup(reply_markup=build_user_profile_setup_sex_keyboard())
+# SETUP USER GENDER
+@dp.callback_query_handler(user_profile_section_callback.filter(section='setup_gender'))
+async def process_user_profile_setup_gender_callback(call: types.CallbackQuery):
+    await call.message.edit_reply_markup(reply_markup=build_user_profile_setup_gender_keyboard())
     await call.answer()
 
 
-@dp.callback_query_handler(user_profile_setup_sex_callback.filter())
-async def process_user_profile_setup_sex(call: types.CallbackQuery, callback_data: dict):
-    sex = callback_data.get('sex')
-    print(sex)
-    user = await UserService.setup_sex(user=call.from_user.id, sex=sex)
+@dp.callback_query_handler(user_profile_setup_gender_callback.filter())
+async def process_user_profile_setup_gender(call: types.CallbackQuery, callback_data: dict):
+    gender = callback_data.get('gender')
+    print(gender)
+    user = await UserService.setup_gender(user=call.from_user.id, gender=gender)
     await show_user_profile(message=call.message, user=user, edit_message=True)
     await call.answer()

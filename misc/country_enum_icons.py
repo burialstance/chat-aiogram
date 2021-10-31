@@ -1,7 +1,7 @@
-from database.types import CountriesEnum
+from database.enums import CountriesEnum
 from misc import icon_characters as icons
 
-country_type_icons = {
+country_enum_icons = {
     CountriesEnum.RUSSIA: icons.russia_flag,
     CountriesEnum.UKRAINE: icons.ukraine_flag,
     CountriesEnum.BELARUS: icons.belarus_flag,

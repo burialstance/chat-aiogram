@@ -1,17 +1,22 @@
-from typing import Union
+from typing import Union, Optional
 
 from database.models.user import User
 from database.models.country import Country
-from database.types import UserSexEnum, SearchOptionsSexEnum, CountriesEnum
+from database.enums import UserGenderEnum, SearchOptionsGenderEnum, CountriesEnum
+from loader import bot
 
 
-async def get_user(user: Union[User, int], *fetch_related) -> User:
+async def get_user(user: Union[User, int], *fetch_related) -> Optional[User]:
     if not any([isinstance(user, User), isinstance(user, int)]):
         raise ValueError(f'value "user" must be int or <User> instance')
 
     if isinstance(user, int) or isinstance(user, str) and user.isdigit():
         telegram_id = user
-        user, _ = await User.get_or_create(telegram_id=telegram_id)
+        user = await User.get(telegram_id=telegram_id)
+
+        if not user:
+            return None
+
     if fetch_related:
         await user.fetch_related(*fetch_related)
     return user
@@ -26,12 +31,12 @@ class UserSearchOptionsService:
         return user
 
     @staticmethod
-    async def setup_sex(user: Union[User, int], sex: SearchOptionsSexEnum) -> User:
+    async def setup_gender(user: Union[User, int], gender: SearchOptionsGenderEnum) -> User:
         user = await get_user(user, 'search_options')
-        if not isinstance(sex, SearchOptionsSexEnum):
-            sex = SearchOptionsSexEnum(sex)
-        user.search_options.sex = sex
-        await user.search_options.save(update_fields=['sex'])
+        if not isinstance(gender, SearchOptionsGenderEnum):
+            gender = SearchOptionsGenderEnum(gender)
+        user.search_options.gender = gender
+        await user.search_options.save(update_fields=['gender'])
         return user
 
     @staticmethod
@@ -57,11 +62,11 @@ class UserService:
         return user
 
     @staticmethod
-    async def setup_sex(user: Union[User, int], sex: UserSexEnum) -> User:
-        if not isinstance(sex, UserSexEnum):
-            sex = UserSexEnum(sex)
+    async def setup_gender(user: Union[User, int], gender: UserGenderEnum) -> User:
+        if not isinstance(gender, UserGenderEnum):
+            gender = UserGenderEnum(gender)
         user = await get_user(user)
-        user.sex = sex
+        user.gender = gender
         await user.save()
         return user
 
@@ -72,4 +77,28 @@ class UserService:
         user = await get_user(user)
         user.country, _ = await Country.get_or_create(name=country)
         await user.save()
+        return user
+
+    @staticmethod
+    async def user_exists(telegram_id: int):
+        return await User.exists(telegram_id=telegram_id)
+
+    @staticmethod
+    async def create(telegram_id: int, age: int = None, country_name: str = None,
+                     gender: str = None, referred_id: int = None):
+        gender = UserGenderEnum(gender) if gender else UserGenderEnum.UNKNOWN
+        country_name = CountriesEnum(country_name) if country_name else None
+        country_instance, _ = await Country.get_or_create(name=country_name) if country_name else (None, None)
+
+        referred_instance = await User.get_or_none(telegram_id=referred_id) \
+            if all([referred_id, referred_id != telegram_id]) else None
+        user = await User.create(
+            telegram_id=telegram_id,
+            age=age,
+            country=country_instance,
+            gender=gender,
+            referred=referred_instance
+        )
+        if user.referred:
+            await bot.send_message(chat_id=user.referred.telegram_id, text='referral bonus + 100')
         return user

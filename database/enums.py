@@ -1,18 +1,13 @@
 from enum import Enum
 
 
-class SexEnum(Enum):
-    MALE = 'мужской'
-    FEMALE = 'женский'
-
-
-class UserSexEnum(Enum):
+class UserGenderEnum(Enum):
     MALE = 'мужской'
     FEMALE = 'женский'
     UNKNOWN = 'неизвестный'
 
 
-class SearchOptionsSexEnum(Enum):
+class SearchOptionsGenderEnum(Enum):
     MALE = 'мужской'
     FEMALE = 'женский'
     ALL = 'все'
